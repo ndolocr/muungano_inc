@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django / SQLite database
+db.sqlite3
+db.sqlite3-journal
+
+# Django logs
+*.log
+
+# Media & static (keep if using external storage in prod)
+media/
+staticfiles/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# PyCharm / VSCode / JetBrains
+.idea/
+.vscode/
+*.swp
+
+# Byte-compiled / distribution
+build/
+dist/
+*.egg-info/
+
+# Coverage / test reports
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Docker
+*.pid
+*.seed
+*.log
+*.pid.lock
+docker-compose.override.yml
+
+# Environment variables
+*.env
+.env.*
+!.env.example
+
+# MacOS
+.DS_Store
+
+# Linux
+*~
