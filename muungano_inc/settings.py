@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Created Apps
+    'project.apps.project',
     'user_management.apps.UserManagementConfig',
 ]
 
