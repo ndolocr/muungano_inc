@@ -3,10 +3,10 @@
 {% block context %}
 <div style=" padding: 20px"> </div>
     <!-- BEGIN SAMPLE TABLE PORTLET-->
-    <div class="portlet box blue-hoki">
+    <div class="portlet box red">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-cog"></i>View all Project Records </div>
+                <i class="fa fa-cogs"></i>View all Project Records </div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"> </a>                
                 <!-- <a href="javascript:;" class="remove"> </a> -->
@@ -19,11 +19,7 @@
                         <tr>
                             <th> # </th>
                             <th> Name </th>
-                            <th> Status </th>
-                            <th> Category </th>
-                            <th> Priority </th>
-                            <th> Project Lead </th>
-                            <th> Project Location </th>
+                            <th> Description </th>                            
                             <th> </th>
                         </tr>
                     </thead>
@@ -32,11 +28,7 @@
                         <tr>
                             <td> {{ forloop.counter }} </td>
                             <td> {{ record.name }} </td>
-                            <td> {{ record.status }} </td>
-                            <td> {{ record.category }} {{ record.user.last_name }} </td>
-                            <td> {{ record.priority }} </td>
-                            <td> {{ record.project_lead }} </td>
-                            <td> {{ record.location }} </td>
+                            <td> {{ record.description }} </td>
                             <td style="text-align: center;"> <a href=""> <i class="fa fa-edit" aria-hidden="true"></i> </a> </td>
                         </tr>
                         {% endfor %}
