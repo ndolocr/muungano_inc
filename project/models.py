@@ -35,9 +35,8 @@ class Project(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="planned")
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default="medium")
 
-
-    start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)    
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
