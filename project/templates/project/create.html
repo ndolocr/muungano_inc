@@ -8,7 +8,7 @@
     <div class="portlet box blue-hoki">
         <div class="portlet-title">
             <div class="caption"> 
-                <i class="fa fa-wrench"></i>
+                <i class="fa fa-cog"></i>
                 Create New Project Record 
             </div>
 
@@ -44,9 +44,14 @@
                             <div class="form-group"> 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">Category</label> <input type="text" class="form-control" placeholder="Category" name="category">
+                                        <label class="control-label">Category</label> 
+                                        <select class="form-control" name="category">                                            
+                                            {% for project_category in project_categories %}
+                                            <option value="{{project_category.id}}">{{project_category.name}}</option>
+                                            {% endfor %}
+                                        </select>                                        
                                     </div>
-
+                                    
                                     <div class="col-md-6">
                                         <label class="control-label">End Date</label> <input type="date" class="form-control" placeholder="End Date" name="end_date"> 
                                     </div>
@@ -56,7 +61,12 @@
                             <div class="form-group"> 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">Project Lead</label> <input type="text" class="form-control" placeholder="Project lead" name="project_lead">
+                                        <label class="control-label">Project Lead</label>
+                                        <select class="form-control" name="project_lead">                                            
+                                            {% for user in users %}
+                                            <option value="{{user.id}}">{{user.last_name}} {{user.middle_name}}</option>
+                                            {% endfor %}
+                                        </select>                                         
                                     </div>
 
                                     <div class="col-md-6">

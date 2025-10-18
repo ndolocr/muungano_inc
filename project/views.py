@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 
+from user_management.models import User
+
 from project.models import Project
+from project.models import ProjectCategory
 
 # Create your views here.
 
-def home_page(request):
+def project_home_page(request):
     if request.method == "GET":
         records = Project.objects.all()
         context = {
@@ -13,10 +16,18 @@ def home_page(request):
         }
         return render(request, 'project/home_page.html', context)
     
-def create(request):
+def project_create(request):
     if request.method == "GET":
-        return render(request, 'project/create.html')
-    elif request.method == "POST":
+        project_categories = ProjectCategory.objects.all()
+        users = User.objects.all()
+
+        context = {
+            'users': users,
+            'project_categories': project_categories
+        }
+
+        return render(request, 'project/create.html', context)
+    elif request.method == "POST":        
         status = request.POST.get('status', '')
         category = request.POST.get('category', '')
         location = request.POST.get('location', '')
@@ -27,29 +38,58 @@ def create(request):
         project_lead = request.POST.get('project_lead', '')
         project_name = request.POST.get('project_name', '')
 
-        print(f"Project Name {project_name}")
-        print(f"Project Lead {project_lead}")
-        print(f"Project Status {status}")
-        print(f"Project Category {category}")
-        print(f"Project Location {location}")
-        print(f"Project Priority {priority}")
-        print(f"Project End Date {end_date}")
-        print(f"Project Start Date {start_date}")
-        print(f"Project Description {description}")
+        user_obj = User.objects.get(pk=project_lead)
+        category_obj = ProjectCategory.objects.get(pk=category)
+
+        print(f"Project Name --> {project_name}")
+        print(f"Project Lead --> {project_lead}")
+        print(f"Project Status --> {status}")
+        print(f"Project Category --> {category}")
+        print(f"Project Location --> {location}")
+        print(f"Project Priority --> {priority}")
+        print(f"Project End Date --> {end_date}")
+        print(f"Project Start Date --> {start_date}")
+        print(f"Project Description --> {description}")
+        print(f"Project Lead OBJ --> {user_obj}")
+        print(f"Project Category OBJ --> {category_obj}")
 
         try:
             record = Project.objects.create(
                 status = status,
-                category = category,
+                name = project_name,                
                 location = location,
                 end_date = end_date,
                 priority = priority,
+                category = category_obj,
+                project_lead = user_obj,
                 start_date = start_date,
                 description = description,
-                project_lead = project_lead,
-                project_name = project_name,
             )
             return redirect('project:home-page')
+        except Exception as e:
+            print(f'Error on saving --> {e}')
+            return render(request, 'project/create.html')
+        
+def categories_home_page(request):
+    records = ProjectCategory.objects.all()
+    context = {
+        'records': records
+    }
+    return render(request, 'project_category/home_page.html', context)
+
+def categories_create(request):
+    if request.method == "GET":
+        return render(request, 'project_category/create.html')
+    elif request.method == "POST":
+        description = request.POST.get('description', '')
+        name = request.POST.get('name', '')
+
+        print(f"Category Name {name}")
+        print(f"Category Description {description}")
+
+        try:
+            record = ProjectCategory.objects.create(name = name, description = description)
+            return redirect('project:categories-home-page')
         except Exception as e:
             print(f'Error on saving --> {e}')
             return render(request, 'project/create.html')
