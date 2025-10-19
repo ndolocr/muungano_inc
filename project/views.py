@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 
 from user_management.models import User
 
+from project.models import Stage
 from project.models import Project
 from project.models import ProjectCategory
 
@@ -106,4 +107,26 @@ def stages_view_all(request):
     return render(request, 'project_stage/view_all.html')
 
 def stages_create(request):
-    return render(request, 'stages_category/create.html')
+    if request.method == "POST":
+        
+        status = request.POST.get('status', '')
+        name = request.POST.get('stage_name', '')
+        end_date = request.POST.get('end_date', '')
+        priority = request.POST.get('priority', '')
+        start_date = request.POST.get('start_date', '')
+        description = request.POST.get('description', '')
+        main_project = request.POST.get('project_id', '')
+
+        project = Project.objects.get(pk=main_project)
+
+        record = Stage.objects.create(
+            name = name,
+            status = status,            
+            end_date = end_date,
+            priority = priority,
+            main_project = project,
+            start_date = start_date,
+            description = description,            
+        )
+
+    return redirect('project:view-project', id=main_project)

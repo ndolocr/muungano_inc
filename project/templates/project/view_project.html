@@ -148,14 +148,10 @@
                                 </tr>
 
                                 <tr>
-                                    <td colspan="3"> 
-                                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                            Launch demo modal
-                                            </button> -->
-                                            <button id="openPopupBtn" class="btn btn-primary">Add New Record</button>
-                                        <!-- <a class="btn btn-success" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
+                                    <td colspan="3">                                         
+                                        <a class="btn btn-success" href="#" id="openPopupBtn" data-toggle="modal" data-target="#exampleModalCenter"> 
                                             <i class="fa fa-plus"></i> Project Stage
-                                        </a>   -->
+                                        </a>  
                                     </td> 
                                 </tr>
                             </tbody>
@@ -1494,7 +1490,7 @@
                         </div>
                         <div class="portlet-body form">
                             <!-- BEGIN FORM-->
-                            <form action="{% url 'project:create' %}" method="POST" enctype="multipart/form-data">
+                            <form action="{% url 'project:stages-create' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="row">
                 
@@ -1504,11 +1500,13 @@
                 
                                     <div class="col-md-12">
                                         <div class="form-body">
-                
+
+                                            <input type="text" class="form-control" hidden value="{{project_obj.id}}" name="project_id"> 
+
                                             <div class="form-group"> 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <label class="control-label">Project Name</label> <input type="text" class="form-control" placeholder="Project Name" name="project_name"> 
+                                                        <label class="control-label">Stage Name</label> <input type="text" class="form-control" placeholder="Stage Name" name="stage_name"> 
                                                     </div>
                 
                                                     <div class="col-md-6">
@@ -1520,11 +1518,12 @@
                                             <div class="form-group"> 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <label class="control-label">Category</label> 
-                                                        <select class="form-control" name="category">                                            
-                                                            {% for project_category in project_categories %}
-                                                            <option value="{{project_category.id}}">{{project_category.name}}</option>
-                                                            {% endfor %}
+                                                        <label class="control-label">Priority</label>
+                                                        <select class="form-control" name="priority">
+                                                            <option value="low">Low</option> 
+                                                            <option value="high">High</option>
+                                                            <option value="medium">Medium</option>
+                                                            <option value="critical">Critical</option>
                                                         </select>                                        
                                                     </div>
                                                     
@@ -1532,31 +1531,7 @@
                                                         <label class="control-label">End Date</label> <input type="date" class="form-control" placeholder="End Date" name="end_date"> 
                                                     </div>
                                                 </div>
-                                            </div>
-                
-                                            <div class="form-group"> 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label class="control-label">Project Lead</label>
-                                                        <select class="form-control" name="project_lead">                                            
-                                                            {% for user in users %}
-                                                            <option value="{{user.id}}">{{user.last_name}} {{user.middle_name}}</option>
-                                                            {% endfor %}
-                                                        </select>                                         
-                                                    </div>
-                
-                                                    <div class="col-md-6">
-                                                        <label class="control-label">Location</label> <input type="text" class="form-control" placeholder="Location" name="location">
-                                                    </div>
-                
-                                                    <!-- <div class="col-md-6">
-                                                        <label class="control-label">Gender</label>
-                                                        <select class="form-control" name="gender">
-                                                            <option value="Male">Male</option> <option value="Female">Female</option>
-                                                        </select>
-                                                    </div> -->
-                                                </div>
-                                            </div>
+                                            </div>                                                           
                 
                                             <div class="form-group"> 
                                                 <div class="row">
@@ -1569,17 +1544,7 @@
                                                             <option value="cancelled">Cancelled</option>
                                                             <option value="in_progress">In Progress</option>
                                                         </select>
-                                                    </div>
-                
-                                                    <div class="col-md-6">
-                                                        <label class="control-label">Priority</label>
-                                                        <select class="form-control" name="priority">
-                                                            <option value="low">Low</option> 
-                                                            <option value="high">High</option>
-                                                            <option value="medium">Medium</option>
-                                                            <option value="critical">Critical</option>
-                                                        </select>
-                                                    </div>
+                                                    </div>                
                 
                                                 </div>
                                             </div>
