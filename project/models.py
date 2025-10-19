@@ -29,11 +29,11 @@ class Project(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True)
-    project_lead = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="planned")
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default="medium")
+    project_lead = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     end_date = models.DateField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)    
