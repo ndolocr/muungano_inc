@@ -73,7 +73,9 @@ def project_create(request):
 
 def view_project(request, id):
     project_obj = Project.objects.get(pk=id)
+    stages = Stage.objects.filter(main_project = project_obj)
     context = {
+        'stages': stages,
         'project_obj': project_obj,
     }
 
