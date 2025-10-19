@@ -1,0 +1,139 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<style>
+    .form-group{margin-bottom: 15px;}
+</style>
+<div class="col-md-12">
+    <div class="portlet box green-hoki">
+        <div class="portlet-title">
+            <div class="caption"> 
+                <i class="fa fa-cog"></i>
+                Create New Project Stage Record 
+            </div>
+
+            <div class="tools">
+                <a style="color: #FFF;" href="javascript:;" class="collapse"> <i class="fa fa-compress"></i> </a>                
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <form action="{% url 'project:stages-create' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+
+                    {% if error_message %}
+                    <div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{error_message}}</div></div>
+                    {% endif %}
+
+                    <div class="col-md-12">
+                        <div class="form-body">
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Stage Name</label> <input type="text" class="form-control" placeholder="Project Name" name="stage_name"> 
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Start Date</label> <input type="date" class="form-control" placeholder="Start Date" name="start_date"> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Category</label> 
+                                        <select class="form-control" name="category">                                            
+                                            {% for project_category in project_categories %}
+                                            <option value="{{project_category.id}}">{{project_category.name}}</option>
+                                            {% endfor %}
+                                        </select>                                        
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="control-label">End Date</label> <input type="date" class="form-control" placeholder="End Date" name="end_date"> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Project Lead</label>
+                                        <select class="form-control" name="project_lead">                                            
+                                            {% for user in users %}
+                                            <option value="{{user.id}}">{{user.last_name}} {{user.middle_name}}</option>
+                                            {% endfor %}
+                                        </select>                                         
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Location</label> <input type="text" class="form-control" placeholder="Location" name="location">
+                                    </div>
+
+                                    <!-- <div class="col-md-6">
+                                        <label class="control-label">Gender</label>
+                                        <select class="form-control" name="gender">
+                                            <option value="Male">Male</option> <option value="Female">Female</option>
+                                        </select>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Status</label>
+                                        <select class="form-control" name="status">
+                                            <option value="on_hold">On Hold</option> 
+                                            <option value="planned">Planned</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="cancelled">Cancelled</option>
+                                            <option value="in_progress">In Progress</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Priority</label>
+                                        <select class="form-control" name="priority">
+                                            <option value="low">Low</option> 
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="critical">Critical</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label">Description</label>
+                                        <textarea class="form-control" name="description" id="editor"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-body">
+                        <div class="form-actions">
+                            <button type="submit" class="btn green">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+               
+            </form>
+            <!-- END FORM-->
+        </div>
+    </div>
+</div>
+{% endblock %}

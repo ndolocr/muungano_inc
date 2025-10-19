@@ -8,7 +8,7 @@ from project.models import ProjectCategory
 
 # Create your views here.
 
-def project_home_page(request):
+def view_all(request):
     if request.method == "GET":
         records = Project.objects.all()
         context = {
@@ -65,11 +65,19 @@ def project_create(request):
                 start_date = start_date,
                 description = description,
             )
-            return redirect('project:home-page')
+            return redirect('project:view-all')
         except Exception as e:
             print(f'Error on saving --> {e}')
             return render(request, 'project/create.html')
-        
+
+def view_project(request, id):
+    project_obj = Project.objects.get(pk=id)
+    context = {
+        'project_obj': project_obj,
+    }
+
+    return render(request,'project/view_project.html',context)
+
 def categories_home_page(request):
     records = ProjectCategory.objects.all()
     context = {
@@ -93,3 +101,9 @@ def categories_create(request):
         except Exception as e:
             print(f'Error on saving --> {e}')
             return render(request, 'project/create.html')
+        
+def stages_view_all(request):    
+    return render(request, 'project_stage/view_all.html')
+
+def stages_create(request):
+    return render(request, 'stages_category/create.html')

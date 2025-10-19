@@ -36,6 +36,7 @@
     <link href="{% static 'css/light2.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
     <link href="{% static 'css/darkblue.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
     <link href="{% static 'css/custom.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/profile.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
 </head>
@@ -130,7 +131,7 @@
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item">
-                                <a href="{% url 'project:home-page' %}" class="nav-link ">
+                                <a href="{% url 'project:view-all' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">View All</span>
                                 </a>
@@ -176,14 +177,14 @@
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item">
-                                <a href="" class="nav-link ">
+                                <a href="{% url 'project:stages-view-all' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">View All</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="" class="nav-link ">
+                                <a href="{% url 'project:stages-create' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">Create</span>
                                 </a>
