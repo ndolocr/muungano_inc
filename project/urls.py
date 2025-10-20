@@ -12,6 +12,8 @@ urlpatterns = [
     path('stages', views.stages_view_all, name='stages-view-all'),
     path('stages/create', views.stages_create, name='stages-create'),
 
+    path('activity/create', views.activity_create, name='activity-create'),
+
     path('categories', views.categories_home_page, name='categories-home-page'),
     path('categories/create', views.categories_create, name='categories-create'),
 ]
