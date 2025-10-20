@@ -123,21 +123,21 @@
                         <h3 class="uppercase">Menu</h3>
                     </li>
 
-                    <li class="nav-item {{staff_active}} {{staff_open}}">
+                    <li class="nav-item {{project_active}} {{project_open}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="fa fa-cog" aria-hidden="true"></i>
                             <span class="title">Projects</span>
-                            <span class="arrow"></span>
+                            <span class="arrow"></span>                            
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item">
+                            <li class="nav-item {{project_view_all_active}} {{project_view_all_open}}">
                                 <a href="{% url 'project:view-all' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
-                                    <span class="title">View All</span>
+                                    <span class="title">View All</span>                                    
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <li class="nav-item {{project_create_active}} {{project_create_open}}">
                                 <a href="{% url 'project:create' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">Create New</span>
@@ -167,87 +167,7 @@
                                 </a>
                             </li>
                         </ul>                                                        
-                    </li>                   
-
-                    <li class="nav-item {{student_active}} {{student_open}}">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="fa fa-bars" aria-hidden="true"></i>
-                            <span class="title">Project Stage</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="{% url 'project:stages-view-all' %}" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">View All</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{% url 'project:stages-create' %}" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">Create</span>
-                                </a>
-                            </li>                            
-                                                                                                           
-                        </ul>
-                    </li>
-                    
-                    <!-- <li class="heading">
-                        <h3 class="uppercase">School Infrustructure</h3>
-                    </li> -->
-
-                    <!-- <li class="nav-item  ">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="icon-briefcase"></i>
-                            <span class="title">Class</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">View All</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">Create Student</span>
-                                </a>
-                            </li>                            
-                                                                                                           
-                        </ul>
-                    </li> -->
-
-                    <!-- <li class="nav-item  ">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="icon-grid"></i>
-                            <span class="title">Stream</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">View All</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">Create Student</span>
-                                </a>
-                            </li>                            
-                                                                                                           
-                        </ul>
-                    </li> -->
-
-
-
-
+                    </li>               
                   
                 </ul>
                 <!-- END SIDEBAR MENU -->

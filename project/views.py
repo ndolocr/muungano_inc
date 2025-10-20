@@ -15,7 +15,11 @@ def view_all(request):
     if request.method == "GET":
         records = Project.objects.all()
         context = {
-            'records': records
+            'records': records,
+            'project_open': 'open',
+            'project_active': 'active',
+            'project_view_all_open': 'open',
+            'project_view_all_active': 'active',
         }
         return render(request, 'project/home_page.html', context)
     
@@ -26,6 +30,10 @@ def project_create(request):
 
         context = {
             'users': users,
+            'project_open': 'open',
+            'project_active': 'active',
+            'project_create_open': 'open',
+            'project_create_active': 'active',
             'project_categories': project_categories
         }
 
@@ -87,7 +95,11 @@ def view_project(request, id):
     )['total'] or 0
     context = {
         'stages': stages,
+        'project_open': 'open',        
+        'project_active': 'active',
         'project_obj': project_obj,
+        'project_view_all_open': 'open',
+        'project_view_all_active': 'active',
         'total_actual_cost': total_actual_cost,
         'total_budgeted_cost': total_budgeted_cost,        
     }
@@ -194,5 +206,5 @@ def activity_create(request):
             actual_cost = actual_cost,
             budgeted_cost = budgeted_cost,            
         )
-        
+
         return redirect('project:view-project', id=main_project)
