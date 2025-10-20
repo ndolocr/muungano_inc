@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import render
 from django.shortcuts import redirect
 
@@ -6,6 +7,7 @@ from user_management.models import User
 from project.models import Stage
 from project.models import Project
 from project.models import ProjectCategory
+from project.models import StageActivities
 
 # Create your views here.
 
@@ -73,10 +75,21 @@ def project_create(request):
 
 def view_project(request, id):
     project_obj = Project.objects.get(pk=id)
-    stages = Stage.objects.filter(main_project = project_obj)
+    stages = Stage.objects.filter(main_project = project_obj).prefetch_related('items')
+
+    # Sum all budgeted and actual costs from related activities
+    total_budgeted_cost = StageActivities.objects.filter(stage__main_project=project_obj).aggregate(
+        total=Sum('budgeted_cost')
+    )['total'] or 0
+
+    total_actual_cost = StageActivities.objects.filter(stage__main_project=project_obj).aggregate(
+        total=Sum('actual_cost')
+    )['total'] or 0
     context = {
         'stages': stages,
         'project_obj': project_obj,
+        'total_actual_cost': total_actual_cost,
+        'total_budgeted_cost': total_budgeted_cost,        
     }
 
     return render(request,'project/view_project.html',context)
@@ -121,7 +134,7 @@ def stages_create(request):
 
         project = Project.objects.get(pk=main_project)
 
-        record = Stage.objects.create(
+        stage = Stage.objects.create(
             name = name,
             status = status,            
             end_date = end_date,
@@ -131,4 +144,55 @@ def stages_create(request):
             description = description,            
         )
 
+        # Loop through activities dynamically
+        index = 0
+        while True:
+            activity_name = request.POST.get(f'activity_name_{index}')
+            budgeted_cost = request.POST.get(f'budgeted_cost_{index}')
+            actual_cost = request.POST.get(f'actual_cost_{index}')
+            is_completed = request.POST.get(f'is_completed_{index}') == 'true'
+
+            if not activity_name:
+                break  # Stop when no more activities
+
+            StageActivities.objects.create(
+                stage=stage,
+                name=activity_name,
+                budgeted_cost=budgeted_cost or 0,
+                actual_cost=actual_cost or 0,
+                is_completed=is_completed,
+            )
+            index += 1
+
     return redirect('project:view-project', id=main_project)
+
+def activity_create(request):
+    if request.method == "POST":
+        complete = True
+        stage_id = request.POST.get('stage_id', '')
+        actual_cost = request.POST.get('actual_cost', '')
+        is_completed = request.POST.get('is_completed', '')
+        budgeted_cost = request.POST.get('budgeted_cost', '')
+        activity_name = request.POST.get('activity_name', '')
+        main_project = request.POST.get('main_project_id', '')
+
+        print(f"Stage ID --> {stage_id}")
+        print(f"Actual Cost --> {actual_cost}")
+        print(f"Main Project --> {main_project}")
+        print(f"Is Completed --> {is_completed}")
+        print(f"Budgeted Cost --> {budgeted_cost}")
+        print(f"Activity Name --> {activity_name}")
+        
+        if is_completed == "0":
+            complete = False
+
+        stage_obj = Stage.objects.get(pk=stage_id)
+        activity = StageActivities.objects.create(
+            stage = stage_obj,            
+            name = activity_name,
+            is_completed = complete,
+            actual_cost = actual_cost,
+            budgeted_cost = budgeted_cost,            
+        )
+        
+        return redirect('project:view-project', id=main_project)

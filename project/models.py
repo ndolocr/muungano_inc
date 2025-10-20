@@ -45,12 +45,20 @@ class Project(models.Model):
         return self.name
 
     @property
-    def total_budget(self):
-        return sum(item.budgeted_cost for item in self.items.all())
+    def total_budgeted_cost(self):
+        """Sum of all budgeted costs across all stages."""
+        total = 0
+        for stage in self.project_stage.all():
+            total += stage.total_budgeted_cost
+        return total
 
     @property
     def total_actual_cost(self):
-        return sum(item.actual_cost for item in self.items.all())
+        """Sum of all actual costs from related activities."""
+        total = 0
+        for stage in self.project_stage.all():
+            total += stage.total_actual_cost
+        return total
 
     @property
     def progress_percent(self):
@@ -75,6 +83,28 @@ class Stage(models.Model):
 
     def __str__(self):
         return f"{self.name} (Sub of {self.main_project.name})"
+    
+    @property
+    def total_budgeted_cost(self):
+        """Sum of all budgeted costs from related activities."""
+        return sum(activity.budgeted_cost for activity in self.items.all())
+
+    @property
+    def total_actual_cost(self):
+        """Sum of all actual costs from related activities."""
+        return sum(activity.actual_cost for activity in self.items.all())
+
+class StageActivities(models.Model):    
+    stage = models.ForeignKey(Stage, on_delete=models.CASCADE, related_name="items", null=True, blank=True)
+
+    name = models.CharField(max_length=255)  # e.g. "Cement", "Labor"
+    budgeted_cost = models.DecimalField(max_digits=12, decimal_places=2)
+    actual_cost = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    is_completed = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 
 
 # class ProjectItem(models.Model):
