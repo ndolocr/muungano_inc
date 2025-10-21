@@ -145,3 +145,55 @@ def update_my_profile(request):
         return redirect("profile")
 
     return render(request, "auth/update_profile.html", {"user": user})
+
+@login_required
+def update_user_profile(request, id):
+    """
+    Allows the logged-in user to update their personal details.
+    """
+    user = User.objects.get(pk=id)
+
+    if request.method == "POST":
+        # Get submitted data
+        first_name = request.POST.get("first_name", "").strip()
+        middle_name = request.POST.get("middle_name", "").strip()
+        last_name = request.POST.get("last_name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        gender = request.POST.get("gender", "")
+        date_of_birth = request.POST.get("date_of_birth", "")
+        country_code = request.POST.get("country_code", "")
+        id_number = request.POST.get("id_number", "")
+        id_type = request.POST.get("id_type", "")
+        id_photo = request.FILES.get("id_photo")
+        passport_photo = request.FILES.get("passport_photo")
+
+        # Update user details
+        user.first_name = first_name
+        user.middle_name = middle_name
+        user.last_name = last_name
+        user.email = email
+        user.gender = gender
+        user.date_of_birth = date_of_birth or None
+        user.country_code = country_code
+        user.id_number = id_number
+        user.id_type = id_type
+
+        # Update phone only if it’s not conflicting with another user
+        if phone and phone != user.phone:
+            if User.objects.filter(phone=phone).exclude(id=user.id).exists():
+                messages.error(request, "That phone number is already in use.")
+                return redirect("update-profile")
+            user.phone = phone
+
+        # Handle photo uploads
+        if id_photo:
+            user.id_photo = id_photo
+        if passport_photo:
+            user.passport_photo = passport_photo
+
+        user.save()
+        messages.success(request, "Your profile has been updated successfully.")
+        return redirect("profile")
+
+    return render(request, "auth/update_profile.html", {"user": user})
