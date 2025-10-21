@@ -6,10 +6,13 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
- 
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+
+from user_management.models import User
 
 # Create your views here.
-User = get_user_model()
+# User = get_user_model()
 
 def register_user(request):
     if request.method == 'POST':
@@ -56,3 +59,37 @@ def logout_user(request):
     logout(request)
     messages.info(request, "You have been logged out.")
     return redirect('login')
+
+@login_required
+def update_password(request):
+    """
+    Allows a logged-in user to change their password.
+    """
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        user = request.user
+
+        # Verify current password
+        if not user.check_password(current_password):
+            messages.error(request, "Your current password is incorrect.")
+            return redirect('update-password')
+
+        # Check that new passwords match
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect('update-password')
+
+        # Change password securely
+        user.set_password(new_password)
+        user.save()
+
+        # Keep the user logged in after changing password
+        update_session_auth_hash(request, user)
+
+        messages.success(request, "Your password has been updated successfully.")
+        return redirect('dashboard')  # redirect wherever appropriate
+
+    return render(request, 'auth/update_password.html')
