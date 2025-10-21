@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
@@ -50,3 +51,8 @@ def login_user(request):
             return redirect('login')
 
     return render(request, 'auth/login.html')
+
+def logout_user(request):
+    logout(request)
+    messages.info(request, "You have been logged out.")
+    return redirect('login')
